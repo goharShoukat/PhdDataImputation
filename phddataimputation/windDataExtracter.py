@@ -61,23 +61,3 @@ rows=[dfm2['WindSpeed'].to_numpy(), dfm3['WindSpeed'].to_numpy(), dfm4['WindSpee
 df_wind = pd.DataFrame(data=rows).transpose()
 df_wind=df_wind.rename(columns={0:'M2', 1:'M3', 2:'M4', 3:'M5', 4:'M6'})
 df_wind.to_csv('data/semiprocessed/wind.csv', index=False)
-
-# =============================================================================
-# Plot the gaps within windspeed of each timeseries
-# =============================================================================
-
-na_groups = dfm5.WindSpeed.notna().cumsum()[dfm5.WindSpeed.isna()]
-nans = na_groups.groupby(na_groups).agg(len).reset_index(drop=True).rename('gaps')
-
-bins = [0, 1, 2, 3, 4, 5, 10, 100, 1000, 365*3600]
-
-grouped = nans.groupby(pd.cut(nans, bins)).count().rename('WindSpeed')
-grouped.index.rename='Gaps'
-bins = ['1', '2', '3', '4', '5', '6 - 10', '11 - 100', '100 - 1000', '> 1000']
-grouped = list(grouped)
-# =============================================================================
-# grouped.plot(kind='bar', rot=0, grid = True, x = 'No. of occurances', y='Wind Speed (m/s)')
-# =============================================================================
-
-fig, ax = plt.subplots()
-ax.bar(bins, grouped)
