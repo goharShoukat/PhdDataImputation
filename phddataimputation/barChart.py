@@ -62,4 +62,4 @@ def barChartGapQuantification(df, title):
     ax.set_ylabel('Occurance')
     ax.set_title(title)
     plt.legend()
-    plt.savefig('output/gap-bars.png', dpi=200)
+    plt.savefig('output/{} gap bars.png'.format(title), dpi=200)
