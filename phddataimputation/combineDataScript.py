@@ -1,26 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 16 19:24:06 2023
+Created on Sat Jul 29 22:06:38 2023
 
 @author: goharshoukat
 
-This script extracts wind speed from raw data files
-- strips the wrong data prior to 2012
-- converts knots to m/s
-- combines data from all buoys to one df
-- writes the data to semi-processed folder
+Script to combine all the different functions to test it out
 """
 
-from phddataimputation.timeSeriesPlotter import timeSeriesPlotter
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from phddataimputation.timeSeriesPlotter import timeSeriesPlotter
 
-# =============================================================================
-# Load each time series individually and plot for wind speed
-# =============================================================================
 dfm2=pd.read_csv('/Users/goharshoukat/Documents/GitHub/PhdDataImputation/data/raw/m2.csv', skiprows=[1])
+
 dfm2['WindSpeed'] = dfm2['WindSpeed'] * 0.514444
 dfm2['Date'] = pd.to_datetime(dfm2['time'], errors='coerce')
 timeSeriesPlotter(dfm2, 'WindSpeed', unit='m/s', plot_direc='/Users/goharshoukat/Documents/GitHub/PhdDataImputation/output/m2/', Coordinates='',

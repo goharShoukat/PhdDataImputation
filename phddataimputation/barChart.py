@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def barChartGapQuantification(df, title):
+# =============================================================================
+#     df=pd.read_csv('data/semiprocessed/wind.csv')
+# =============================================================================
     cols = df.columns
     bins = [0, 1, 2, 3, 24, 48, 365*24]
     
