@@ -9,38 +9,33 @@ Script to combine all the different functions to test it out
 """
 
 import pandas as pd
-import numpy as np
 from phddataimputation.timeSeriesPlotter import timeSeriesPlotter
+from phddataimputation.dataExtracter import dataExtractor
 
-dfm2=pd.read_csv('/Users/goharshoukat/Documents/GitHub/PhdDataImputation/data/raw/m2.csv', skiprows=[1])
-
-dfm2['WindSpeed'] = dfm2['WindSpeed'] * 0.514444
-dfm2['Date'] = pd.to_datetime(dfm2['time'], errors='coerce')
+dfm2 = dataExtractor(pd.read_csv('data/raw/m2.csv', skiprows=[1]), 
+              'data/semiprocessed/M2/M2WindSpeed.csv', 'WindSpeed')
 timeSeriesPlotter(dfm2, 'WindSpeed', unit='m/s', plot_direc='/Users/goharshoukat/Documents/GitHub/PhdDataImputation/output/m2/', Coordinates='',
                   title='M2 Wind Speed')
 
-dfm3=pd.read_csv('/Users/goharshoukat/Documents/GitHub/PhdDataImputation/data/raw/m3.csv', skiprows=[1])
-dfm3['WindSpeed'] = dfm3['WindSpeed'] * 0.514444
-dfm3['Date'] = pd.to_datetime(dfm3['time'], errors='coerce')
+
+dfm3=dataExtractor(pd.read_csv('data/raw/m3.csv', skiprows=[1]), 
+              'data/semiprocessed/M3/M3WindSpeed.csv', 'WindSpeed')
 timeSeriesPlotter(dfm3, 'WindSpeed', unit='m/s', plot_direc='/Users/goharshoukat/Documents/GitHub/PhdDataImputation/output/m3/', Coordinates='',
                   title='M3 Wind Speed')
 
-dfm4=pd.read_csv('/Users/goharshoukat/Documents/GitHub/PhdDataImputation/data/raw/m4.csv', skiprows=[1])
-dfm4['WindSpeed'] = dfm4['WindSpeed'] * 0.514444
-dfm4['Date'] = pd.to_datetime(dfm4['time'], errors='coerce')
+dfm4=dataExtractor(pd.read_csv('data/raw/m4.csv', skiprows=[1]), 
+              'data/semiprocessed/M4/M4WindSpeed.csv', 'WindSpeed')
 timeSeriesPlotter(dfm4, 'WindSpeed', unit='m/s', plot_direc='/Users/goharshoukat/Documents/GitHub/PhdDataImputation/output/m4/', Coordinates='',
                   title='M4 Wind Speed')
 
-dfm5=pd.read_csv('/Users/goharshoukat/Documents/GitHub/PhdDataImputation/data/raw/m5.csv', skiprows=[1])
-dfm5['WindSpeed'] = dfm5['WindSpeed'] * 0.514444
-dfm5['Date'] = pd.to_datetime(dfm5['time'], errors='coerce')
+dfm5=dataExtractor(pd.read_csv('data/raw/m5.csv', skiprows=[1]), 
+              'data/semiprocessed/M5/M4WindSpeed.csv', 'WindSpeed')
 timeSeriesPlotter(dfm5, 'WindSpeed', unit='m/s', plot_direc='/Users/goharshoukat/Documents/GitHub/PhdDataImputation/output/m5/', Coordinates='',
                   title='M5 Wind Speed')
 
 
-dfm6=pd.read_csv('/Users/goharshoukat/Documents/GitHub/PhdDataImputation/data/raw/m6.csv', skiprows=[1])
-dfm6['WindSpeed'] = dfm6['WindSpeed'] * 0.514444
-dfm6['Date'] = pd.to_datetime(dfm6['time'], errors='coerce')
+dfm6=dataExtractor(pd.read_csv('data/raw/m6.csv', skiprows=[1]), 
+              'data/semiprocessed/M6/M6WindSpeed.csv', 'WindSpeed')
 timeSeriesPlotter(dfm6, 'WindSpeed', unit='m/s', plot_direc='/Users/goharshoukat/Documents/GitHub/PhdDataImputation/output/m6/', Coordinates='',
                   title='M6 Wind Speed')
 
