@@ -17,6 +17,7 @@ def dataExtractor(df, outputPath, variable):
     df[variable] = df[variable] * 0.514444 #convert to m/s
     df['Date']      = pd.to_datetime(df['time'], errors='coerce')
     df_variable = pd.DataFrame({'Date': df['Date'].T, variable: df[variable].T})
+    df_variable.to_csv(outputPath)
     return df_variable
 
 df = dataExtractor(pd.read_csv('data/raw/m2.csv', skiprows=[1]), 
