@@ -11,7 +11,6 @@ import pandas as pd
 import random
 import math
 
-
 def remove_n_consecutive_rows(frame, n, percent):
     chunks_to_remove = int(math.ceil(percent/100*frame.shape[0]/n))
     #split the indices into chunks of length n+2
@@ -23,3 +22,8 @@ def remove_n_consecutive_rows(frame, n, percent):
         #remove all chunks which contain overlapping values with indices
         chunks = [c for c in chunks if not any(n in indices for n in c)]
     return frame.drop(drop_indices)
+    
+
+def concatenateDeletedWithOriginalDFWithDroppedNA(df, n, percent):
+    df_miss = remove_n_consecutive_rows(df, n, percent)
+    return pd.merge(df_miss, df, on='Date', how='right', suffixes=['_artificial_gaps', '_original'])
