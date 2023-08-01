@@ -13,12 +13,18 @@ This script extracts wind speed from raw data files
 """
 import pandas as pd
 
-def dataExtractor(df, outputPath, variable):
-    df[variable] = df[variable] * 0.514444 #convert to m/s
-    df['Date']      = pd.to_datetime(df['time'], errors='coerce')
-    df_variable = pd.DataFrame({'Date': df['Date'].T, variable: df[variable].T})
-    df_variable.to_csv(outputPath, index=False)
+
+def dataExtractor(df, output_path, variable):
+    df[variable] = df[variable] * 0.514444  # convert to m/s
+    df["Date"] = pd.to_datetime(df["time"], errors="coerce")
+    df_variable = pd.DataFrame({"Date": df["Date"].T, variable: df[variable].T})
+    df_variable.to_csv(output_path, index=False)
     return df_variable
 
-df = dataExtractor(pd.read_csv('data/raw/m2.csv', skiprows=[1]), 
-              'data/semiprocessed/M2/M2WindSpeed.csv', 'WindSpeed')
+
+def stripTimeSeries(df, year="2012"):
+    year = "2012"
+    year = pd.to_datetime(year, format="%Y")
+    df["Date"] = pd.to_datetime(df["Date"], errors="coerce").dt.date
+    df = df[df["Date"] > year]
+    return df
