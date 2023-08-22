@@ -15,6 +15,22 @@ import pandas as pd
 
 
 def dataExtractor(df, output_path, variable):
+    """
+    Parameters
+    ----------
+    df : TYPE
+        DESCRIPTION.
+    output_path : TYPE
+        DESCRIPTION.
+    variable : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    df_variable : TYPE
+        DESCRIPTION.
+
+    """
     df[variable] = df[variable] * 0.514444  # convert to m/s
     df["Date"] = pd.to_datetime(df["time"], errors="coerce")
     df_variable = pd.DataFrame({"Date": df["Date"].T, variable: df[variable].T})
@@ -23,6 +39,20 @@ def dataExtractor(df, output_path, variable):
 
 
 def stripTimeSeries(df, year="2012"):
+    """
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Time Series read from buoys.
+    year : str, optional
+        DESCRIPTION. The default is "2012".
+
+    Returns
+    -------
+    df : pd.DataFrame
+        Returns a dataframe after removing segment of the time series prior to the year specified.
+
+    """
     year = "2012"
     year = pd.to_datetime(year, format="%Y")
     df["Date"] = pd.to_datetime(df["Date"], errors="coerce").dt.date
