@@ -19,7 +19,7 @@ df = dataExtractor(
     pd.read_csv("data/raw/m2.csv", skiprows=[1]),
     "data/semiprocessed/M2/M2WindSpeed.csv",
     "WindSpeed",
-)
+).dropna()
 
 df = pd.concat([
         df,
@@ -34,5 +34,15 @@ df = pd.concat([
 
 
 
-df['match'] = df['consec_count'].diff()
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Calculate time differences
+df['time_diff'] = df['Date'].diff()
+
+# Define your threshold for gap length (e.g., 2 months)
 df.to_csv('review.csv')
+threshold = pd.Timedelta('60 days')
+threshold = pd.Timedelta('12 hours')
+
+# Identify gaps exceeding the threshold
+gaps_exceeding_threshold = df[df['time_diff'] > threshold]
