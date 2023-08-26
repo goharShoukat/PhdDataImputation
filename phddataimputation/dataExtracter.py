@@ -53,7 +53,6 @@ def stripTimeSeries(df, year="2012"):
         Returns a dataframe after removing segment of the time series prior to the year specified.
 
     """
-    year = "2012"
     year = pd.to_datetime(year, format="%Y")
     df["Date"] = pd.to_datetime(df["Date"], errors="coerce").dt.date
     df = df[df["Date"] > year]
