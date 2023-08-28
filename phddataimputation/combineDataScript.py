@@ -112,3 +112,6 @@ df = dataExtractor(
 
 df = stripTimeSeries(df)
 df.to_csv("data/semiprocessed/M2/M2WindSpeedAfter2012.csv")
+
+
+
