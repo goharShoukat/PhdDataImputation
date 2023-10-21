@@ -32,7 +32,6 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.fc2 = layers.Dense(1, activation="relu")
         self.lstm = layers.LSTM(64)
 
-        # Output layer
         self.output_layer = layers.Dense(1, activation="relu")
 
     def build(self, input_shape):
