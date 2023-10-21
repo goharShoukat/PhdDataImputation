@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 
+
 class ConvAndLSTMNet(tf.keras.Model):
     def __init__(self):
         super(ConvAndLSTMNet, self).__init__()
@@ -27,7 +28,6 @@ class ConvAndLSTMNet(tf.keras.Model):
 
         self.concatenated = layers.Concatenate()
 
-        
         self.fc1 = layers.Dense(64, activation="relu")
         self.fc2 = layers.Dense(1, activation="relu")
         self.lstm = layers.LSTM(64)

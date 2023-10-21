@@ -11,7 +11,7 @@ Creates artificial gaps in the data
 import math
 import random
 import pandas as pd
-
+from dataExtracter import dataExtractor, stripTimeSeries
 
 def remove_n_consecutive_rows(
     frame: pd.DataFrame, n: int, percent: float
@@ -46,6 +46,7 @@ def remove_n_consecutive_rows(
     return frame.drop(drop_indices)
 
 
+
 def concatenateDeletedWithOriginalDFWithDroppedNA(
     df: pd.DataFrame, n: int, percent: float
 ):
@@ -67,3 +68,13 @@ def concatenateDeletedWithOriginalDFWithDroppedNA(
     return pd.merge(
         df_miss, df, on="Date", how="right", suffixes=["_artificial_gaps", "_original"]
     )
+
+df = dataExtractor(
+    pd.read_csv("data/raw/m2.csv", skiprows=[1]),
+    "data/semiprocessed/M2/M2WindSpeedFullTimeSeries.csv",
+    "WindSpeed",
+)
+
+df2 = df.dropna().reset_index(drop=True)
+df3 = stripTimeSeries(df2)
+df4 = concatenateDeletedWithOriginalDFWithDroppedNA(df3, 1, 10)
