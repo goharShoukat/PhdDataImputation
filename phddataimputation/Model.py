@@ -28,6 +28,7 @@ class ConvAndLSTMNet(tf.keras.Model):
 
         self.concatenated = layers.Concatenate()
 
+        self.dropout = layers.Dropout(0.2)
         self.fc1 = layers.Dense(64, activation="relu")
         self.fc2 = layers.Dense(1, activation="relu")
         self.lstm = layers.LSTM(64)
@@ -48,6 +49,7 @@ class ConvAndLSTMNet(tf.keras.Model):
 
         x = self.concatenated([x1, x2])
         x = self.fc1(x)
+        x = self.dropout(x)
         x = self.fc2(x)
         x = self.lstm(x)
         output = self.output_layer(x)
