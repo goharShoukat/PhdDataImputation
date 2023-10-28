@@ -131,7 +131,6 @@ dmypy.json
 
 .DS_Store
 *.csv
-*.txt
 *.pdf
 *.png
 *.jpg
