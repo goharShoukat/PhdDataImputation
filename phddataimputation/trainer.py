@@ -12,3 +12,14 @@ scalarX = MinMaxScaler(feature_range=(0, 1))
 X1 = scalarX.fit_transform(x1).T.reshape(-1, 24, 1)
 X2 = scalarX.fit_transform(x2).T.reshape(-1, 24, 1)
 Y = scalarX.fit_transform(y)
+
+model = ConvAndLSTMNet()
+optimizer = "adam"
+loss = "mean_squared_error"
+metrics = ["mean_absolute_error"]
+
+input_shape = (24, 1)
+
+
+model.build(input_shape)
+model.summary()

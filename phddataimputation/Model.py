@@ -27,8 +27,7 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.dropout = layers.Dropout(0.2)
         self.fc1 = layers.Dense(64, activation="relu")
         self.fc2 = layers.Dense(1, activation="relu")
-        self.lstm = layers.LSTM(64)
-    
+        self.lstm = layers.LSTM(64, return_sequences=True)
 
         self.output_layer = layers.Dense(1, activation="relu")
 
@@ -53,7 +52,7 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.model = tf.keras.Model(inputs=[input_data1, input_data2], outputs=output)
 
     def summary(self):
-        utils.plot_model(self.model, to_file='model.png')
+        utils.plot_model(self.model, to_file="model.png")
         self.model.summary()
 
     def compile(self, optimizer, loss, metrics):
