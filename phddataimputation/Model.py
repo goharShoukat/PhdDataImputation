@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras import layers
+from tensorflow.keras import layers, utils
 
 
 class ConvAndLSTMNet(tf.keras.Model):
@@ -28,6 +28,7 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.fc1 = layers.Dense(64, activation="relu")
         self.fc2 = layers.Dense(1, activation="relu")
         self.lstm = layers.LSTM(64)
+    
 
         self.output_layer = layers.Dense(1, activation="relu")
 
@@ -36,24 +37,23 @@ class ConvAndLSTMNet(tf.keras.Model):
         input_data2 = tf.keras.Input(shape=input_shape, name="input_data2")
 
         x1 = self.twentyFourHourPrior(input_data1)
-        x1 = layers.MaxPooling1D(pool_size=3, strides=1, padding="valid")(x1)
-        x1 = layers.Flatten()(x1)
+        x1 = layers.MaxPooling1D(pool_size=3, strides=1, padding="same")(x1)
+        x1 = self.lstm(x1)
 
-        # x2 = self.twentyFourHourAfter(input_data2)
-        # x2 = layers.MaxPooling1D(pool_size=3, strides=1, padding="valid")(x2)
-        # x2 = layers.Flatten()(x2)
+        x2 = self.twentyFourHourAfter(input_data2)
+        x2 = layers.MaxPooling1D(pool_size=3, strides=1, padding="same")(x2)
+        x2 = self.lstm(x2)
 
-        # x = self.concatenated([x1, x2])
-        x = self.concatenated([x1])
+        x = self.concatenated([x1, x2])
         x = self.fc1(x)
         x = self.dropout(x)
-        # x = self.fc2(x)
-        # x = self.lstm(x)
+        x = self.fc2(x)
         output = self.output_layer(x)
 
         self.model = tf.keras.Model(inputs=[input_data1, input_data2], outputs=output)
 
     def summary(self):
+        utils.plot_model(self.model, to_file='model.png')
         self.model.summary()
 
     def compile(self, optimizer, loss, metrics):
