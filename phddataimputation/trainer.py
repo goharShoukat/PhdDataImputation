@@ -14,12 +14,14 @@ X2 = scalarX.fit_transform(x2).T.reshape(-1, 24, 1)
 Y = scalarX.fit_transform(y)
 
 model = ConvAndLSTMNet()
+
 optimizer = "adam"
 loss = "mean_squared_error"
 metrics = ["mean_absolute_error"]
 
 input_shape = (24, 1)
-
-
 model.build(input_shape)
-model.summary()
+
+pathToSaveModel = "models/Model1"
+model.summary(path=pathToSaveModel)
+model.save_model(pathToSaveModel, format='tf')

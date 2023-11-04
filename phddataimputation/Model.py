@@ -51,8 +51,8 @@ class ConvAndLSTMNet(tf.keras.Model):
 
         self.model = tf.keras.Model(inputs=[input_data1, input_data2], outputs=output)
 
-    def summary(self):
-        utils.plot_model(self.model, to_file="model.png")
+    def summary(self, path):
+        utils.plot_model(self.model, to_file='{}/architecture.png'.format(path))
         self.model.summary()
 
     def compile(self, optimizer, loss, metrics):
@@ -63,3 +63,6 @@ class ConvAndLSTMNet(tf.keras.Model):
 
     def predict(self, x):
         return self.model.predict(x)
+
+    def save_model(self, path, format):
+        self.model.save(path, save_format=format)
