@@ -15,7 +15,7 @@ from typing import Dict
 def dataSegmenterByThresholdExceedence(
     df: pd.DataFrame, threshold: str
 ) -> Dict[str, pd.DataFrame]:
-    '''
+    """
 
     Parameters
     ----------
@@ -30,7 +30,7 @@ def dataSegmenterByThresholdExceedence(
         original with an additional column containing gap duration and
         segmented containing rows where gap is below a threshold
 
-    '''
+    """
     df = df.dropna()  # preserve index
     df["Date"] = pd.to_datetime(df["Date"])
     df["time_diff"] = df["Date"].diff()
