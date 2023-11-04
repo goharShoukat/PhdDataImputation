@@ -52,7 +52,7 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.model = tf.keras.Model(inputs=[input_data1, input_data2], outputs=output)
 
     def summary(self, path):
-        utils.plot_model(self.model, to_file='{}architecture.png'.format(path))
+        utils.plot_model(self.model, to_file='{}/architecture.png'.format(path))
         self.model.summary()
 
     def compile(self, optimizer, loss, metrics):
