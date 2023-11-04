@@ -52,14 +52,24 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.model = tf.keras.Model(inputs=[input_data1, input_data2], outputs=output)
 
     def summary(self, path):
-        utils.plot_model(self.model, to_file='{}/architecture.png'.format(path))
+        utils.plot_model(self.model, to_file="{}/architecture.png".format(path))
         self.model.summary()
 
     def compile(self, optimizer, loss, metrics):
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
-    def train(self, x, y, epochs, batch_size):
-        self.model.fit(x, y, epochs=epochs, batch_size=batch_size)
+    def train(self, x1, x2, y, epochs, batch_size):
+        self.model.fit(
+            {
+                "input_data1": x1,
+                "input_data2": x2,
+            },
+            y,
+            epochs=epochs,
+            batch_size=batch_size,
+            validation_split=0.1,
+            verbose=1,
+        )
 
     def predict(self, x):
         return self.model.predict(x)
