@@ -21,7 +21,7 @@ metrics = ["mean_absolute_error"]
 
 input_shape = (24, 1)
 model.build(input_shape)
-pathToSaveModel = "models/Model1"
+pathToSaveModel = "models/Model2"
 model.summary(path=pathToSaveModel)
 
 model.compile(
@@ -30,6 +30,6 @@ model.compile(
     metrics=metrics,
 )
 
-model.train(X1, X2, y, epochs=5, batch_size=32)
+model.train(X1, X2, y, epochs=500, batch_size=32)
 
 model.save_model(pathToSaveModel, format="tf")
