@@ -32,7 +32,8 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.fc4 = layers.Dense(64, activation="relu")
         self.fc5 = layers.Dense(128, activation="relu")
         self.fc6 = layers.Dense(64, activation="relu")
-        self.lstm = layers.LSTM(64, return_sequences=True)
+        self.lstmPrior = layers.LSTM(64, return_sequences=True)
+        self.lstmAfter = layers.LSTM(64, return_sequences=True)
         self.fc7 = layers.Dense(2, activation="relu")
 
         self.output_layer = layers.Dense(1, activation="relu")
@@ -43,11 +44,11 @@ class ConvAndLSTMNet(tf.keras.Model):
 
         x1 = self.twentyFourHourPrior(input_data1)
         x1 = layers.MaxPooling1D(pool_size=3, strides=1, padding="same")(x1)
-        x1 = self.lstm(x1)
+        x1 = self.lstmPrior(x1)
 
         x2 = self.twentyFourHourAfter(input_data2)
         x2 = layers.MaxPooling1D(pool_size=3, strides=1, padding="same")(x2)
-        x2 = self.lstm(x2)
+        x2 = self.lstmAfter(x2)
 
         x = self.concatenated([x1, x2])
         x = self.fc1(x)
