@@ -26,27 +26,33 @@ class ConvAndLSTMNet(tf.keras.Model):
 
         self.dropout1 = layers.Dropout(0.2)
         self.dropout2 = layers.Dropout(0.2)
-        self.fc1 = layers.Dense(2, activation="relu")
-        self.fc2 = layers.Dense(4, activation="relu")
-        self.fc3 = layers.Dense(16, activation="relu")
-        self.fc4 = layers.Dense(64, activation="relu")
-        self.fc5 = layers.Dense(128, activation="relu")
-        self.fc6 = layers.Dense(64, activation="relu")
+        self.maxpooling1DPrior = layers.MaxPooling1D(
+            pool_size=3, strides=1, padding="same"
+        )
+        self.maxpooling1DAfter = layers.MaxPooling1D(
+            pool_size=3, strides=1, padding="same"
+        )
+        self.fc1 = layers.TimeDistributed(layers.Dense(2, activation="relu"))
+        self.fc2 = layers.TimeDistributed(layers.Dense(4, activation="relu"))
+        self.fc3 = layers.TimeDistributed(layers.Dense(16, activation="relu"))
+        self.fc4 = layers.TimeDistributed(layers.Dense(64, activation="relu"))
+        self.fc5 = layers.TimeDistributed(layers.Dense(128, activation="relu"))
+        self.fc6 = layers.TimeDistributed(layers.Dense(64, activation="relu"))
         self.lstm = layers.LSTM(64, return_sequences=True)
-        self.fc7 = layers.Dense(2, activation="relu")
+        self.fc7 = layers.TimeDistributed(layers.Dense(2, activation="relu"))
 
-        self.output_layer = layers.Dense(1, activation="relu")
+        self.output_layer = layers.TimeDistributed(layers.Dense(1, activation="relu"))
 
     def build(self, input_shape):
         input_data1 = tf.keras.Input(shape=input_shape, name="input_data1")
         input_data2 = tf.keras.Input(shape=input_shape, name="input_data2")
 
         x1 = self.twentyFourHourPrior(input_data1)
-        x1 = layers.MaxPooling1D(pool_size=3, strides=1, padding="same")(x1)
+        x1 = self.maxpooling1DPrior(x1)
         x1 = self.lstm(x1)
 
         x2 = self.twentyFourHourAfter(input_data2)
-        x2 = layers.MaxPooling1D(pool_size=3, strides=1, padding="same")(x2)
+        x2 = self.maxpooling1DAfter(x2)
         x2 = self.lstm(x2)
 
         x = self.concatenated([x1, x2])
