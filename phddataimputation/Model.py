@@ -7,7 +7,7 @@ class ConvAndLSTMNet(tf.keras.Model):
         super(ConvAndLSTMNet, self).__init__()
 
         self.twentyFourHourPrior = layers.Conv1D(
-            filters=16,
+            filters=64,
             kernel_size=2,
             activation="relu",
             strides=1,
@@ -15,7 +15,7 @@ class ConvAndLSTMNet(tf.keras.Model):
         )
 
         self.twentyFourHourAfter = layers.Conv1D(
-            filters=16,
+            filters=64,
             kernel_size=2,
             activation="relu",
             strides=1,
@@ -41,7 +41,7 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.lstm = layers.LSTM(64, return_sequences=True)
         self.fc7 = layers.TimeDistributed(layers.Dense(2, activation="relu"))
 
-        self.output_layer = layers.TimeDistributed(layers.Dense(1, activation="relu"))
+        self.output_layer = layers.TimeDistributed(layers.Dense(1, activation="linear"))
 
     def build(self, input_shape):
         input_data1 = tf.keras.Input(shape=input_shape, name="input_data1")

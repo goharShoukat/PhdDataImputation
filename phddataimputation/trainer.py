@@ -21,7 +21,7 @@ metrics = ["mean_absolute_error"]
 
 input_shape = (24, 1)
 model.build(input_shape)
-pathToSaveModel = "models/Model2"
+pathToSaveModel = "models/Model1"
 model.summary(path=pathToSaveModel)
 
 model.compile(
