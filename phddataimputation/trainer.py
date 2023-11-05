@@ -30,6 +30,6 @@ model.compile(
     metrics=metrics,
 )
 
-model.train(X1, X2, y, epochs=500, batch_size=32)
+model.train(X1, X2, y, epochs=100, batch_size=32)
 
 model.save_model(pathToSaveModel, format="tf")
