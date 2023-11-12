@@ -66,7 +66,11 @@ def concatenateDeletedWithOriginalDFWithDroppedNA(
     """
     df_miss = remove_n_consecutive_rows(df, n, percent)
     return pd.merge(
-        df_miss, df, on="Date", how="right", suffixes=["_artificial_gaps", "_original"]
+        df_miss,
+        df,
+        on="Date",
+        how="right",
+        suffixes=["_artificial_gaps", "_original"],
     )
 
 

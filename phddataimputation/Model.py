@@ -37,9 +37,14 @@ class ConvAndLSTMNet(tf.keras.Model):
         self.fc3 = layers.TimeDistributed(layers.Dense(16, activation="relu"))
         self.fc4 = layers.TimeDistributed(layers.Dense(64, activation="relu"))
         self.fc5 = layers.TimeDistributed(layers.Dense(128, activation="relu"))
-        self.fc6 = layers.TimeDistributed(layers.Dense(64, activation="relu"))
+        self.fc6 = layers.TimeDistributed(layers.Dense(128, activation="relu"))
         self.lstm = layers.LSTM(64, return_sequences=True)
-        self.fc7 = layers.TimeDistributed(layers.Dense(2, activation="relu"))
+        self.fc7 = layers.TimeDistributed(layers.Dense(128, activation="relu"))
+        self.fc8 = layers.TimeDistributed(layers.Dense(64, activation="relu"))
+        self.fc9 = layers.TimeDistributed(layers.Dense(2, activation="relu"))
+        self.fc10 = layers.TimeDistributed(layers.Dense(64, activation="relu"))
+        self.fc11 = layers.TimeDistributed(layers.Dense(56, activation="relu"))
+        self.fc12 = layers.TimeDistributed(layers.Dense(2, activation="relu"))
 
         self.output_layer = layers.TimeDistributed(layers.Dense(1, activation="linear"))
 
@@ -65,6 +70,11 @@ class ConvAndLSTMNet(tf.keras.Model):
         x = self.fc6(x)
         x = self.dropout2(x)
         x = self.fc7(x)
+        x = self.fc8(x)
+        x = self.fc9(x)
+        # x = self.fc10(x)
+        # x = self.fc11(x)
+        # x = self.fc12(x)
 
         output = self.output_layer(x)
 
