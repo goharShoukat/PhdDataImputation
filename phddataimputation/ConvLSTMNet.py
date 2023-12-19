@@ -2,9 +2,9 @@ import tensorflow as tf
 from tensorflow.keras import layers, utils
 
 
-class ConvAndLSTMNet(tf.keras.Model):
+class ConvLSTMNet(tf.keras.Model):
     def __init__(self):
-        super(ConvAndLSTMNet, self).__init__()
+        super(ConvLSTMNet, self).__init__()
 
         self.twentyFourHourPrior = layers.Conv1D(
             filters=64,

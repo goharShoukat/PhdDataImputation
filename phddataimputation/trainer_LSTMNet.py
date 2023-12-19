@@ -1,27 +1,23 @@
-from Model import ConvAndLSTMNet
-import os
+from LSTMNet import LSTMNet
 import pandas as pd
-import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
-x1 = pd.read_csv("data/trainingData/x1.csv", header=None)
-x2 = pd.read_csv("data/trainingData/x2.csv", header=None)
+x1 = pd.read_csv("data/trainingData/x_1_feature.csv", header=None)
 y = pd.read_csv("data/trainingData/y.csv", header=None)
 
 scalarX = MinMaxScaler(feature_range=(0, 1))
-X1 = scalarX.fit_transform(x1).T.reshape(-1, 24, 1)
-X2 = scalarX.fit_transform(x2).T.reshape(-1, 24, 1)
+X1 = scalarX.fit_transform(x1).T.reshape(-1, 1, 1)
 Y = scalarX.fit_transform(y)
 
-model = ConvAndLSTMNet()
+model = LSTMNet()
 
 optimizer = "adam"
 loss = "mean_squared_error"
 metrics = ["mean_absolute_error"]
 
-input_shape = (24, 1)
+input_shape = (1, 1)
 model.build(input_shape)
-pathToSaveModel = "models/Model1"
+pathToSaveModel = "models/1/Model1"
 model.summary(path=pathToSaveModel)
 
 model.compile(
@@ -30,6 +26,6 @@ model.compile(
     metrics=metrics,
 )
 
-model.train(X1, X2, y, epochs=100, batch_size=32)
+model.train(X1, y, epochs=100, batch_size=32)
 
 model.save_model(pathToSaveModel, format="tf")
