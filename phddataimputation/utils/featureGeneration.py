@@ -4,7 +4,7 @@ Feature generation depending on number of timesteps to consider
 import numpy as np
 
 
-def inputData(df, features, save: bool):
+def featureGeneration(df, features, save: bool):
     """
     df: pandas.DataFrame
     features: int: number of features to be generated with lag
