@@ -1,7 +1,5 @@
-from Model import ConvAndLSTMNet
-import os
+from ConvLSTMNet import ConvLSTMNet
 import pandas as pd
-import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 x1 = pd.read_csv("data/trainingData/x1.csv", header=None)
@@ -13,7 +11,7 @@ X1 = scalarX.fit_transform(x1).T.reshape(-1, 24, 1)
 X2 = scalarX.fit_transform(x2).T.reshape(-1, 24, 1)
 Y = scalarX.fit_transform(y)
 
-model = ConvAndLSTMNet()
+model = ConvLSTMNet()
 
 optimizer = "adam"
 loss = "mean_squared_error"
