@@ -2,7 +2,7 @@ from LSTMNet import LSTMNet
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-x1 = pd.read_csv("data/trainingData/x__feature.csv", header=None)
+x1 = pd.read_csv("data/trainingData/x_1_feature.csv", header=None)
 y = pd.read_csv("data/trainingData/y.csv", header=None)
 
 scalarX = MinMaxScaler(feature_range=(0, 1))

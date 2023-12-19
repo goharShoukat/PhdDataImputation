@@ -3,7 +3,7 @@ from tensorflow.keras import layers, utils
 
 
 class LSTMNet(tf.keras.Model):
-    def __init__(self, features):
+    def __init__(self):
         super(LSTMNet, self).__init__()
         self.lstm = layers.LSTM(64)
         self.fc = layers.Dense(1, activation="relu")
@@ -17,7 +17,7 @@ class LSTMNet(tf.keras.Model):
 
         output = self.output_layer(x)
 
-        self.model = tf.keras.Model(inputs=input_data, output=output)
+        self.model = tf.keras.Model(inputs=input_data, outputs=output)
 
     def summary(self, path):
         utils.plot_model(self.model, to_file="{}/architecture.png".format(path))
