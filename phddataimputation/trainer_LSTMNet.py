@@ -3,7 +3,8 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from utils import generateDirectory, featureGeneration
 
-features = 1
+features = 2
+neurons = 512
 x1, y = featureGeneration(
     pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv")
     .dropna()
@@ -13,10 +14,10 @@ x1, y = featureGeneration(
 )
 
 scalarX = MinMaxScaler(feature_range=(0, 1))
-X1 = scalarX.fit_transform(x1).T.reshape(-1, 1, 1)
+X1 = scalarX.fit_transform(x1).T.reshape(-1, features, 1)
 Y = scalarX.fit_transform(y.reshape(-1,1))
 
-model = LSTMNet()
+model = LSTMNet(neurons)
 
 optimizer = "adam"
 loss = "mean_squared_error"
@@ -24,7 +25,7 @@ metrics = ["mean_absolute_error"]
 
 input_shape = (features, 1)
 model.build(input_shape)
-pathToSaveModel = "models/{}/Model1-64Neurons".format(features)
+pathToSaveModel = "models/{}/Model1-{}Neurons".format(features, neurons)
 generateDirectory(pathToSaveModel)
 model.summary(path=pathToSaveModel)
 

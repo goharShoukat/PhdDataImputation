@@ -3,9 +3,9 @@ from tensorflow.keras import layers, utils
 
 
 class LSTMNet(tf.keras.Model):
-    def __init__(self):
+    def __init__(self, neurons):
         super(LSTMNet, self).__init__()
-        self.lstm = layers.LSTM(64)
+        self.lstm = layers.LSTM(neurons)
         self.fc = layers.Dense(1, activation="relu")
         self.dropout = layers.Dropout(0.2)
         self.output_layer = layers.Dense(1, activation="linear")
