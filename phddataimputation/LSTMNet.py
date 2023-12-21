@@ -1,5 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import layers, utils
+import json
 
 
 class LSTMNet(tf.keras.Model):
@@ -27,7 +28,7 @@ class LSTMNet(tf.keras.Model):
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
     def train(self, x, y, epochs, batch_size):
-        self.model.fit(
+        self._hist = self.model.fit(
             {
                 "input": x,
             },
@@ -38,9 +39,20 @@ class LSTMNet(tf.keras.Model):
             verbose=1,
         )
 
+    def getLoss(self):
+        return json.dumps(self._hist.history["loss"])
+
+    def getMeanAbsoluteError(self):
+        return json.dumps(self._hist.history["mean_absolute_error"])
+
+    def getValLoss(self):
+        return json.dumps(self._hist.history["val_loss"])
+
+    def getValMeanAbsoluteError(self):
+        return json.dumps(self._hist.history["val_mean_absolute_error"])
+
     def predict(self, x):
         return self.model.predict(x)
 
     def save_model(self, path, format):
         self.model.save(path, save_format=format)
-# 
