@@ -36,7 +36,6 @@ class LSTMNet(tf.keras.Model):
             epochs=epochs,
             batch_size=batch_size,
             validation_split=0.1,
-            verbose=1,
         )
 
     def getLoss(self):

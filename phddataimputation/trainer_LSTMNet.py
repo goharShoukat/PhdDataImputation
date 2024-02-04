@@ -18,9 +18,11 @@ for con in config1():
     )
 
     if con["scaling"]:
-        scalar = MinMaxScaler(feature_range=(0, 1))
-        X1 = scalar.fit_transform(x1).T.reshape(-1, con["features"], 1)
-        Y = scalar.fit_transform(y.reshape(-1, 1))
+        scalarX = MinMaxScaler(feature_range=(0, 1))
+        X1 = scalarX.fit_transform(x1).T.reshape(-1, con["features"], 1)
+
+        scalarY = MinMaxScaler(feature_range=(0, 1))
+        Y = scalarY.fit_transform(y.reshape(-1, 1))
     else:
         X1 = x1.T.reshape(-1, con["features"], 1)
         Y = y.reshape(-1, 1)
@@ -49,7 +51,7 @@ for con in config1():
         metrics=metrics,
     )
 
-    model.train(X1, Y, epochs=20, batch_size=8)
+    model.train(X1, Y, epochs=10, batch_size=8)
 
     model.save_model(pathToSaveModel, format="tf")
 
