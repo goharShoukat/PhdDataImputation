@@ -137,3 +137,5 @@ dmypy.json
 
 models/
 *.xlsx
+.RData
+.Rhistory
