@@ -6,11 +6,13 @@ from config import config1, config2, config3, config4
 import logging
 
 
-logging.basicConfig(filename="config1.log", level=logging.INFO, filemode="w")
+logging.basicConfig(filename="config4.log", level=logging.INFO, filemode="w")
 
-for con in config1():
+for con in config4():
     x1, y = featureGeneration(
         pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv")
+        .iloc[:672]
+        .reset_index(drop=True)
         .dropna()
         .to_numpy(),
         con["features"],
@@ -18,9 +20,11 @@ for con in config1():
     )
 
     if con["scaling"]:
-        scalar = MinMaxScaler(feature_range=(0, 1))
-        X1 = scalar.fit_transform(x1).T.reshape(-1, con["features"], 1)
-        Y = scalar.fit_transform(y.reshape(-1, 1))
+        scalarX = MinMaxScaler(feature_range=(0, 1))
+        X1 = scalarX.fit_transform(x1).T.reshape(-1, con["features"], 1)
+
+        scalarY = MinMaxScaler(feature_range=(0, 1))
+        Y = scalarY.fit_transform(y.reshape(-1, 1))
     else:
         X1 = x1.T.reshape(-1, con["features"], 1)
         Y = y.reshape(-1, 1)
@@ -49,7 +53,7 @@ for con in config1():
         metrics=metrics,
     )
 
-    model.train(X1, Y, epochs=20, batch_size=8)
+    model.train(X1, Y, epochs=200, batch_size=8)
 
     model.save_model(pathToSaveModel, format="tf")
 
