@@ -17,7 +17,7 @@ class PostProcessing:
         self.Y = self.scalarY.fit_transform(y.reshape(-1, 1))
 
     def predict(self, testX):
-        results = self.model.predict({"input", testX})
+        results = self.model.predict({"input": testX})
         return results
 
     def denormalise(self, results):
