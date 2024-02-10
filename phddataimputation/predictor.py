@@ -1,4 +1,9 @@
-from utils import featureGeneration, PostProcessing, generateDirectory
+from utils import (
+    featureGeneration,
+    PostProcessing,
+    generateDirectory,
+    reconstruction_input_generator,
+)
 import pandas as pd
 import numpy as np
 import tensorflow as tf
@@ -18,32 +23,38 @@ for con in config4():  # change here
     generateDirectory(outDir)
 
     model = tf.keras.models.load_model(path)
+    df = pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv").iloc[:672]
     x, y = featureGeneration(
-        pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv")
-        .iloc[:672]
-        .reset_index(drop=True)
-        .dropna()
-        .to_numpy(),
+        df.reset_index(drop=True).dropna().to_numpy(),
         con["features"],
         True,
     )
 
+    testX = reconstruction_input_generator(
+        df, "WindSpeed_artificial_gaps", con["features"]
+    )
+
     foo = PostProcessing(path)
     model = foo.load()
-    foo.normalise(x, y, 1)
-    if con["features"] == 1:
-        scaled_predictions = []
-        i = 0
-        for bar in foo.X:
-            i += 1
-            print(i)
-            scaled_predictions.append(foo.predict(bar))
-
-    else:
-        scaled_predictions = foo.predict(x)
 
     if con["scaling"]:
-        denormalised = foo.denormalise(np.array(scaled_predictions).reshape(-1, 1))
+        scaled_testX = foo.normalise(x, y, con["features"], testX)
+    else:
+        scaled_testX = testX
+
+    if con["features"] == 1:
+        predictions = []
+        i = 0
+        for bar in scaled_testX:
+            i += 1
+            print(i)
+            predictions.append(foo.predict(np.array(bar).reshape(1, 1)))
+
+    else:
+        predictions = foo.predict(testX)
+
+    if con["scaling"]:
+        denormalised = foo.denormalise(np.array(predictions).reshape(-1, 1))
 
         np.savetxt(
             outDir + "reconstructed.csv",
@@ -55,7 +66,7 @@ for con in config4():  # change here
     else:
         np.savetxt(
             outDir + "reconstructed.csv",
-            np.array(scaled_predictions).reshape(-1, 1),
+            np.array(predictions).reshape(-1, 1),
             fmt="%f",
             delimiter=",",
         )

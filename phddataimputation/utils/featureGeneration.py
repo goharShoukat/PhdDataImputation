@@ -42,4 +42,4 @@ def featureGeneration(df, features, save: bool):
             fmt="%f",
             delimiter=",",
         )
-    return x, y
+    return x, y.reshape(-1, 1)
