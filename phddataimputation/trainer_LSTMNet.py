@@ -1,4 +1,5 @@
 from LSTMNet import LSTMNet
+from calbacks import callbacks
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from utils import generateDirectory, featureGeneration
@@ -6,9 +7,9 @@ from config import config1, config2, config3, config4
 import logging
 
 
-logging.basicConfig(filename="config4.log", level=logging.INFO, filemode="w")
+logging.basicConfig(filename="config3.log", level=logging.INFO, filemode="w")
 
-for con in config4():
+for con in config3():
     x1, y = featureGeneration(
         pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv")
         .iloc[:672]
@@ -53,9 +54,9 @@ for con in config4():
         metrics=metrics,
     )
 
-    model.train(X1, Y, epochs=200, batch_size=8)
+    model.train(X1, Y, epochs=200, batch_size=8, checkpoint_save_dir=pathToSaveModel)
 
-    model.save_model(pathToSaveModel, format="tf")
+    # model.save_model(pathToSaveModel, format="tf")
 
     logging.info(
         "Features: {}, Neurons: {}, Scaling: {}".format(

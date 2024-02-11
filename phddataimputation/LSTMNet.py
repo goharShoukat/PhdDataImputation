@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers, utils
 import json
+from calbacks import callbacks
 
 
 class LSTMNet(tf.keras.Model):
@@ -27,7 +28,7 @@ class LSTMNet(tf.keras.Model):
     def compile(self, optimizer, loss, metrics):
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
-    def train(self, x, y, epochs, batch_size):
+    def train(self, x, y, epochs, batch_size, checkpoint_save_dir):
         self._hist = self.model.fit(
             {
                 "input": x,
@@ -36,6 +37,7 @@ class LSTMNet(tf.keras.Model):
             epochs=epochs,
             batch_size=batch_size,
             validation_split=0.1,
+            callbacks=[*callbacks(checkpoint_save_dir).values()],
         )
 
     def getLoss(self):
