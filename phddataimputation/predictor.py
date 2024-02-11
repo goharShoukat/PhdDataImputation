@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 from config import config1, config2, config3, config4
 
-for con in config1():  # change here
+for con in config3():  # change here
     path = "models/{}/Model1-{}Neurons{}".format(
         con["features"],
         con["neurons"],
