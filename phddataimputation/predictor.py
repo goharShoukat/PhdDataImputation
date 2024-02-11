@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 from config import config1, config2, config3, config4
 
-for con in config4():  # change here
+for con in config3():  # change here
     path = "models/{}/Model1-{}Neurons{}".format(
         con["features"],
         con["neurons"],
@@ -51,7 +51,7 @@ for con in config4():  # change here
             predictions.append(foo.predict(np.array(bar).reshape(1, 1)))
 
     else:
-        predictions = foo.predict(testX)
+        predictions = foo.predict(scaled_testX)
 
     if con["scaling"]:
         denormalised = foo.denormalise(np.array(predictions).reshape(-1, 1))
