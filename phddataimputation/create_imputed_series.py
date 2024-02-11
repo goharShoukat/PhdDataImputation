@@ -5,10 +5,8 @@ from utils import reconstruct_artificial_with_imputation
 from config import config1, config2, config3, config4
 
 
-for con in config1():
-    df = pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv").iloc[
-        :672
-    ]
+for con in config3():
+    df = pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv").iloc[:672]
     outDir = "output/{}/Model1-{}Neurons{}/".format(
         con["features"],
         con["neurons"],
