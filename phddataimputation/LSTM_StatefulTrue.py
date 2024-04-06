@@ -36,11 +36,12 @@ def Sequential_Input_LSTM_Stateful(df, input_sequence, batch_size):
 
 
 # Define batch size
-batch_size = 32
+batch_size = 1
 
-n_input = 2
+n_input = 1
 model1 = Sequential()
 n_features = 1
+dropout = 0.025
 model1.add(
     LSTM(
         100,
@@ -49,6 +50,8 @@ model1.add(
         batch_input_shape=(batch_size, n_input, n_features),
     )
 )  # Fix input layer
+# v3 has two extra lstm layers
+model1.add(LSTM(100, return_sequences=True, stateful=True, dropout=dropout))
 model1.add(LSTM(100, return_sequences=True, stateful=True))
 model1.add(LSTM(100, return_sequences=True, stateful=True))
 model1.add(LSTM(100, return_sequences=True, stateful=True))
@@ -59,16 +62,11 @@ model1.add(Dense(1, activation="linear"))
 df = pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv").iloc[:672]
 
 X, y = Sequential_Input_LSTM_Stateful(
-    df["WindSpeed_artificial_gaps"].dropna().reset_index(drop=True), n_input, batch_size
+    df["WindSpeed_artificial_gaps"].dropna().reset_index(drop=True),
+    n_input,
+    batch_size,
 )
 
-model_save_callback = ModelCheckpoint(
-    filepath="models/Stateful/{}/".format(n_input),
-    monitor="loss",
-    mode="min",
-    save_best_only=True,
-    period=10,
-)
 
 model1.compile(
     loss=MeanSquaredError(),
@@ -77,17 +75,25 @@ model1.compile(
 )
 
 # Train the model with stateful data
-for i in range(3000):
+print(
+    n_input,
+    dropout,
+)
+error = []
+for i in range(1000):
     for j in range(len(X)):
         history = model1.train_on_batch(X[j], y[j])
 
     # Reset states at the end of each batch
     model1.reset_states()
 
-    if i % 10 == 0:
-        model1.save("models/Stateful/{}/model_{}.h5".format(n_input, i))
-        print(f"Epoch {i}, Loss: {history}")
+    # if i % 10 == 0:
+    model1.save(
+        "models/Stateful_dropout_{}V3/{}/model_{}.h5".format(dropout, n_input, i)
+    )
+    print(f"Epoch {i}, Loss: {history}")
 
-hist = pd.DataFrame(history.history).to_csv(
-    "models/Stateful/{}/loss.csv".format(n_input)
-)
+    error.append(history)
+
+df = pd.DataFrame(error)
+df.to_csv("models/Stateful_dropout_{}V3/{}/loss.csv".format(dropout, n_input))

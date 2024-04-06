@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
 
 original = pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv").iloc[
     :672
@@ -15,20 +16,33 @@ arima_mse = mean_squared_error(
 #     original["WindSpeed_original"], arima["imputed_data"]
 # )
 
-lstm_error = []
-for m in [2, 3, 4, 5, 6, 7]:
-    path = "output/2/{}/full-reconstruction.csv".format(m)
-    lstm = pd.read_csv(path, header=None)
-    lstm_imputed = lstm.to_numpy()[missing_values]
-    lstm_error.append(
-        [
-            m,
-            mean_squared_error(
-                original["WindSpeed_original"][missing_values], lstm_imputed
-            ),
-        ]
-    )
 
+# path = "output/2/{}/full-reconstruction.csv".format(m)
+path = "output/1_dropout_0.025/stateful.csv"
+lstm = pd.read_csv(path)
+lstm_imputed = lstm["Predicted_WindSpeed"].to_numpy()[missing_values]
+mse_lstm = (
+    mean_squared_error(
+        original["WindSpeed_original"][missing_values].to_numpy(),
+        lstm_imputed,
+    ),
+)
+
+
+original_imputed = original["WindSpeed_original"][missing_values]
+
+plt.figure(figsize=(30, 30))
+plt.scatter(
+    original_imputed, lstm_imputed, label="LSTM", color="red", alpha=0.5
+)
+plt.scatter(
+    original_imputed, arima_imputed, label="ARIMA", color="blue", alpha=0.5
+)
+plt.axline((0, 0), slope=1, color="black")
+plt.legend()
+plt.xlabel("True Speed (m/s)")
+plt.ylabel("Imputed speed (m/s)")
+plt.savefig("QQ Comparison.png", dpi=600)
 # lstm = []
 # for con in config1():
 #     print(con)
