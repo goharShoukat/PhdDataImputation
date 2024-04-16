@@ -37,11 +37,11 @@ def Sequential_Input_LSTM_Stateful(df, input_sequence, batch_size):
 
 # Define batch size
 batch_size = 1
-
-n_input = 1
+difference = "second"
+n_input = 2
 model1 = Sequential()
 n_features = 1
-dropout = 0.025
+dropout = 0.05
 model1.add(
     LSTM(
         100,
@@ -59,10 +59,10 @@ model1.add(LSTM(50, stateful=True))
 model1.add(Dense(8, activation="relu"))
 model1.add(Dense(1, activation="linear"))
 
-df = pd.read_csv("data/trainingData/M2_1hour_Gaps_10%_Missing.csv").iloc[:672]
+df = pd.read_csv("data/trainingData/{}-difference.csv".format(difference)).iloc[:672]
 
 X, y = Sequential_Input_LSTM_Stateful(
-    df["WindSpeed_artificial_gaps"].dropna().reset_index(drop=True),
+    df["diff_data"].dropna().reset_index(drop=True),
     n_input,
     batch_size,
 )
@@ -89,11 +89,18 @@ for i in range(1000):
 
     # if i % 10 == 0:
     model1.save(
-        "models/Stateful_dropout_{}V3/{}/model_{}.h5".format(dropout, n_input, i)
+        "models/{}-difference/Stateful_dropout_{}/{}/model_{}.h5".format(
+            difference, dropout, n_input, i
+        )
     )
     print(f"Epoch {i}, Loss: {history}")
 
     error.append(history)
 
 df = pd.DataFrame(error)
-df.to_csv("models/Stateful_dropout_{}V3/{}/loss.csv".format(dropout, n_input))
+df.to_csv(
+    "models/{}-difference/Stateful_dropout_{}/{}/loss.csv".format(
+        difference, dropout, n_input
+    )
+)
+print("dropout: {}, inputs: {}, difference: {}".format(dropout, n_input, difference))
